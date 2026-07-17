@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Dispositivo - Gestão CMZanei</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo.png') }}" type="image/png">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card-editar { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 380px; text-align: center; box-sizing: border-box; }
+        h2 { margin-top: 0; margin-bottom: 25px; color: #333; font-size: 1.4em; }
+        label { display: block; text-align: left; margin-bottom: 5px; font-size: 0.9em; color: #555; font-weight: bold; }
+        input, select { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 15px; }
+        .botoes-container { display: flex; gap: 10px; margin-top: 10px; }
+        button, .btn-cancelar { flex: 1; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: bold; text-align: center; text-decoration: none; box-sizing: border-box; cursor: pointer; border: none; }
+        button { background-color: #007bff; color: white; transition: 0.3s; }
+        button:hover { background-color: #0056b3; }
+        .btn-cancelar { 
+            background-color: #e2e6ea; 
+            color: #495057; 
+            display: flex;               /* Mudou para flex */
+            align-items: center;         /* Centraliza verticalmente */
+            justify-content: center;     /* Centraliza horizontalmente */
+            border: 1px solid #ced4da; 
+            transition: 0.3s; 
+        }
+        .btn-cancelar:hover { background-color: #dae0e5; }
+        .msg-alerta { color: #dc3545; background-color: #f8d7da; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 0.9em; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+
+    <div class="card-editar">
+        <h2>Editar Equipamento</h2>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="msg-alerta">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <label for="tipo">Tipo do Dispositivo:</label>
+            <select id="tipo" name="tipo" required>
+                <option value="Tablet" {% if dispositivo['tipo'] == 'Tablet' %}selected{% endif %}>Tablet</option>
+                <option value="Netbook" {% if dispositivo['tipo'] == 'Netbook' %}selected{% endif %}>Netbook</option>
+            </select>
+
+            <label for="patrimonio">Número de Patrimônio:</label>
+            <input type="text" id="patrimonio" name="patrimonio" value="{{ dispositivo['patrimonio'] }}" required>
+
+            <label for="serial">Número de Serial:</label>
+            <input type="text" id="serial" name="serial" value="{{ dispositivo['serial'] if dispositivo['serial'] else '' }}" placeholder="Opcional">
+
+            <div class="botoes-container">
+                <button type="submit">Salvar Alterações</button>
+                <a href="{{ url_for('dashboard') }}" class="btn-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

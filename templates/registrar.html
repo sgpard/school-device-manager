@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro - Gestão Escolar</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card-cadastro { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 350px; }
+        h2 { margin-top: 0; color: #333; text-align: center; }
+        input, select { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        
+        /* Container para o campo de senha e o olho */
+        .password-container { position: relative; width: 100%; }
+        .toggle-password { position: absolute; right: 10px; top: 35%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center; }
+        
+        .criterio { color: red; font-size: 13px; margin-bottom: 5px; transition: 0.3s; }
+        .valido { color: green; font-size: 13px; margin-bottom: 5px; font-weight: bold; transition: 0.3s; }
+        ul { padding-left: 20px; margin-bottom: 20px; }
+        
+        /* Alinhamento dos botões inferiores */
+        .botoes-container { display: flex; gap: 10px; margin-top: 10px; }
+        
+        /* Estilização dos botões estilo card/padrão */
+        button, .btn-voltar { flex: 1; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: bold; text-align: center; text-decoration: none; box-sizing: border-box; cursor: pointer; border: none; }
+        button { background-color: #007bff; color: white; }
+        button:disabled { background-color: #cccccc; cursor: not-allowed; }
+        .btn-voltar { background-color: #e2e6ea; color: #495057; display: inline-block; border: 1px solid #ced4da; }
+        .btn-voltar:hover { background-color: #dae0e5; }
+    </style>
+</head>
+<body>
+
+    <div class="card-cadastro">
+        <h2>Nova Conta</h2>
+        <form method="POST" id="formRegistro">
+            <input type="text" name="nome" placeholder="Nome Completo" required>
+            <input type="text" name="login" placeholder="Login de Usuário" required>
+            
+            <div class="password-container">
+                <input type="password" id="senha" name="senha" placeholder="Senha" required onkeyup="validarSenha()">
+                <span class="toggle-password" onclick="toggleSenha()">
+                    <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </span>
+            </div>
+            
+            <select name="pergunta" required>
+                <option value="" disabled selected>Pergunta de segurança</option>
+                <option value="Qual o nome do seu primeiro pet?">Qual o nome do seu primeiro pet?</option>
+                <option value="Qual o nome da sua rua de infância?">Qual o nome da sua rua de infância?</option>
+                <option value="Qual a sua comida favorita?">Qual a sua comida favorita?</option>
+            </select>
+            
+            <input type="text" name="resposta" placeholder="Sua resposta" autocomplete="off" required>
+            
+            <ul id="requisitos">
+                <li id="comp" class="criterio">Mínimo 8 caracteres</li>
+                <li id="maiusc" class="criterio">Uma letra maiúscula</li>
+                <li id="num" class="criterio">Um número</li>
+                <li id="especial" class="criterio">Um caractere especial (@#$%&*)</li>
+            </ul>
+
+            <div class="botoes-container">
+                <button type="submit" id="btnRegistrar" disabled>Criar Conta</button>
+                <a href="{{ url_for('login') }}" class="btn-voltar">Voltar</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+    function validarSenha() {
+        const senha = document.getElementById('senha').value;
+        const btn = document.getElementById('btnRegistrar');
+        
+        const regras = {
+            comp: senha.length >= 8,
+            maiusc: /[A-Z]/.test(senha),
+            num: /[0-9]/.test(senha),
+            especial: /[!@#$%^&*]/.test(senha)
+        };
+
+        for (const [id, valido] of Object.entries(regras)) {
+            const el = document.getElementById(id);
+            if (valido) {
+                el.className = 'valido';
+            } else {
+                el.className = 'criterio';
+            }
+        }
+
+        btn.disabled = !Object.values(regras).every(Boolean);
+    }
+
+    function toggleSenha() {
+        const campoSenha = document.getElementById('senha');
+        const eyeIcon = document.getElementById('eyeIcon');
+        
+        if (campoSenha.type === 'password') {
+            campoSenha.type = 'text';
+            // Muda o SVG para olho cerrado (hidden)
+            eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+        } else {
+            campoSenha.type = 'password';
+            // Volta para o olho aberto
+            eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+        }
+    }
+    </script>
+</body>
+</html>

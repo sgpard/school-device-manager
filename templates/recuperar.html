@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Recuperar Senha - Gestão CMZanei</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo.png') }}" type="image/png">
+    
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card-recuperar { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 350px; text-align: center; box-sizing: border-box; }
+        
+        h2 { margin-top: 0; margin-bottom: 20px; color: #333; font-size: 1.4em; }
+        p { color: #555; font-size: 0.95em; margin-bottom: 20px; text-align: left; background: #eef2f7; padding: 10px; border-radius: 6px; border-left: 4px solid #007bff; }
+        
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 15px; }
+        
+        .botoes-container { display: flex; gap: 10px; margin-top: 10px; }
+        
+        button, .btn-cancelar { flex: 1; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: bold; text-align: center; text-decoration: none; box-sizing: border-box; cursor: pointer; border: none; }
+        button { background-color: #007bff; color: white; transition: 0.3s; }
+        button:hover { background-color: #0056b3; }
+        
+        .btn-cancelar { background-color: #e2e6ea; color: #495057; display: inline-block; border: 1px solid #ced4da; transition: 0.3s; }
+        .btn-cancelar:hover { background-color: #dae0e5; }
+        
+        .msg-erro { color: #dc3545; background-color: #f8d7da; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 0.9em; border: 1px solid #f5c6cb; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="card-recuperar">
+        <h2>Recuperar Senha</h2>
+
+        {% if erro %}
+            <div class="msg-erro">{{ erro }}</div>
+        {% endif %}
+
+        <form method="POST">
+            {% if passo == 1 %}
+                <input type="text" name="login" placeholder="Digite seu login de usuário" required autofocus>
+                
+                <div class="botoes-container">
+                    <button type="submit" name="btn_verificar_login">Próximo</button>
+                    <a href="{{ url_for('login') }}" class="btn-cancelar">Cancelar</a>
+                </div>
+                
+            {% elif passo == 2 %}
+
+                <input type="password" name="nova_senha" placeholder="Digite a Nova Senha" 
+                        minlength="8"
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"
+                        title="A senha deve ter no mínimo 8 caracteres e incluir pelo menos: uma letra maiúscula, uma letra minúscula e um número."
+                        required>
+
+                <input type="hidden" name="login" value="{{ user['login'] }}">
+                
+                <p><strong>Pergunta:</strong><br>{{ user['pergunta_seguranca'] }}</p>
+                
+                <input type="text" name="resposta" placeholder="Sua resposta de segurança" autocomplete="off" required autofocus>
+                <input type="password" name="nova_senha" placeholder="Digite a Nova Senha" required>
+                
+                <div class="botoes-container">
+                    <button type="submit" name="btn_redefinir">Alterar Senha</button>
+                    <a href="{{ url_for('login') }}" class="btn-cancelar">Cancelar</a>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+
+</body>
+</html>

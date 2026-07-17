@@ -1,0 +1,37 @@
+# --- Ambiente Virtual do Python ---
+venv/
+.venv/
+env/
+ENV/
+Include/
+Lib/
+Scripts/
+pyvenv.cfg
+
+# --- Arquivos Temporários do Python ---
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.toast
+.cache/
+
+# --- Configurações do VS Code e IDE ---
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# --- Banco de Dados Local (Dados de Teste) ---
+escola.db
+escola
+
+# --- Outros arquivos temporários ---
+.DS_Store
+Thumbs.db

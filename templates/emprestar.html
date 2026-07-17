@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Empréstimo - Gestão CMZanei</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo.png') }}" type="image/png">
+    
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card-emprestar { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 380px; text-align: center; box-sizing: border-box; }
+        
+        h2 { margin-top: 0; margin-bottom: 20px; color: #333; font-size: 1.4em; }
+        
+        /* Caixa de destaque com as informações do tablet/netbook */
+        .info-dispositivo { color: #555; font-size: 0.95em; margin-bottom: 25px; text-align: left; background: #eef2f7; padding: 15px; border-radius: 6px; border-left: 4px solid #28a745; }
+        .info-dispositivo strong { color: #333; }
+        
+        label { display: block; text-align: left; margin-bottom: 8px; font-size: 0.9em; color: #555; font-weight: bold; }
+        input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 15px; }
+        
+        .botoes-container { display: flex; gap: 10px; margin-top: 10px; }
+        
+        button, .btn-cancelar { flex: 1; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: bold; text-align: center; text-decoration: none; box-sizing: border-box; cursor: pointer; border: none; }
+        button { background-color: #28a745; color: white; transition: 0.3s; }
+        button:hover { background-color: #218838; }
+        
+        .btn-cancelar { background-color: #e2e6ea; color: #495057; display: inline-block; border: 1px solid #ced4da; transition: 0.3s; }
+        .btn-cancelar:hover { background-color: #dae0e5; }
+    </style>
+</head>
+<body>
+
+    <div class="card-emprestar">
+        <h2>Registrar Retirada</h2>
+
+        <div class="info-dispositivo">
+            <strong>Dispositivo:</strong> {{ dispositivo['tipo'] }}<br>
+            <strong>Patrimônio:</strong> {{ dispositivo['patrimonio'] }}
+        </div>
+        
+        <form method="POST">
+            <label for="responsavel">Nome do Responsável:</label>
+            <input type="text" id="responsavel" name="responsavel" placeholder="Ex: Prof. Cláudio Santos" required autofocus>
+
+            <label for="data_prevista">Data de Devolução Prevista:</label>
+            <input type="date" id="data_prevista" name="data_devolucao_prevista" required>
+            <div class="botoes-container">
+            
+            <div class="botoes-container">
+                <button type="submit">Confirmar</button>
+                <a href="{{ url_for('dashboard') }}" class="btn-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

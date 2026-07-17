@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Histórico do Dispositivo - Gestão CMZanei</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo.png') }}" type="image/png">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; padding: 30px; margin: 0; }
+        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 900px; margin: 0 auto; }
+        h2 { margin-top: 0; color: #333; border-left: 5px solid #007bff; padding-left: 10px; }
+        .info-dispositivo { background: #eef2f7; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #555; font-size: 0.95em; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; font-size: 14px; }
+        th { background-color: #f8f9fa; color: #333; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
+        .badge-devolvido { background-color: #e6f4ea; color: #137333; }
+        .badge-ativo { background-color: #fce8e6; color: #c5221f; }
+        .btn-voltar { background-color: #007bff; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 20px; font-size: 14px; }
+        .btn-voltar:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="{{ url_for('dashboard') }}" class="btn-voltar">← Voltar ao Painel</a>
+        
+        <h2>Histórico de Movimentações</h2>
+        <div class="info-dispositivo">
+            <strong>Equipamento:</strong> {{ dispositivo['tipo'] }} | 
+            <strong>Patrimônio:</strong> {{ dispositivo['patrimonio'] }} | 
+            <strong>Status Atual:</strong> {{ dispositivo['status'] }}
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Responsável</th>
+                    <th>Data de Retirada</th>
+                    <th>Devolução Prevista</th>
+                    <th>Data de Devolução</th>
+                    <th>Autorizado por</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mov in movimentacoes %}
+                <tr>
+                    <td><strong>{{ mov['responsavel_retirada'] }}</strong></td>
+                    <td>{{ mov['data_saida'][8:10] }}/{{ mov['data_saida'][5:7] }}/{{ mov['data_saida'][0:4] }}</td>
+                    <td>{{ mov['data_devolucao_prevista'][8:10] }}/{{ mov['data_devolucao_prevista'][5:7] }}/{{ mov['data_devolucao_prevista'][0:4] }}</td>
+                    <td>
+                        {% if mov['data_devolucao_real'] %}
+                            <span class="status-badge badge-devolvido">
+                                Devolvido em {{ mov['data_devolucao_real'][8:10] }}/{{ mov['data_devolucao_real'][5:7] }}/{{ mov['data_devolucao_real'][0:4] }}
+                            </span>
+                        {% else %}
+                            <span class="status-badge badge-ativo">Em posse do usuário</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ mov['admin_nome'] if mov['admin_nome'] else 'Sistema' }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" style="text-align: center; color: #777;">Este dispositivo nunca foi emprestado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

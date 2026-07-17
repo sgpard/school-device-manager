@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Empréstimo em Lote - Gestão CMZanei</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo.png') }}" type="image/png">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        .card-lote { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 450px; text-align: center; box-sizing: border-box; }
+        h2 { margin-top: 0; margin-bottom: 15px; color: #333; font-size: 1.4em; }
+        
+        .lista-selecionados { background: #f8f9fa; border: 1px solid #ddd; border-radius: 6px; max-height: 120px; overflow-y: auto; text-align: left; padding: 10px; margin-bottom: 25px; font-size: 0.9em; color: #555; }
+        .item-tag { background: #e2e6ea; padding: 3px 8px; border-radius: 4px; display: inline-block; margin: 3px; font-weight: bold; color: #333; }
+        
+        label { display: block; text-align: left; margin-bottom: 5px; font-size: 0.9em; color: #555; font-weight: bold; }
+        input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 15px; }
+        
+        .botoes-container { display: flex; gap: 10px; margin-top: 10px; }
+        button, .btn-cancelar { flex: 1; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: bold; text-align: center; text-decoration: none; box-sizing: border-box; cursor: pointer; border: none; }
+        button { background-color: #28a745; color: white; transition: 0.3s; }
+        button:hover { background-color: #218838; }
+        
+        .btn-cancelar { background-color: #e2e6ea; color: #495057; display: flex; align-items: center; justify-content: center; border: 1px solid #ced4da; transition: 0.3s; }
+        .btn-cancelar:hover { background-color: #dae0e5; }
+    </style>
+</head>
+<body>
+
+    <div class="card-lote">
+        <h2>Retirada Coletiva</h2>
+        <p style="color: #666; font-size: 0.9em; margin-bottom: 15px;">Você está registrando uma saída para os seguintes itens:</p>
+        
+        <div class="lista-selecionados">
+            {% for disp in dispositivos %}
+                <span class="item-tag">{{ disp['patrimonio'] }}</span>
+            {% endfor %}
+        </div>
+        
+        <form action="{{ url_for('lote_emprestar_confirmar') }}" method="POST">
+            {% for item_id in ids %}
+                <input type="hidden" name="ids" value="{{ item_id }}">
+            {% endfor %}
+
+            <label for="responsavel">Nome do Responsável:</label>
+            <input type="text" id="responsavel" name="responsavel" placeholder="Ex: Prof. Cláudio Santos" required autofocus>
+            
+            <label for="data_prevista">Data de Devolução Prevista:</label>
+            <input type="date" id="data_prevista" name="data_devolucao_prevista" required>
+            
+            <div class="botoes-container">
+                <button type="submit">Confirmar Empréstimo</button>
+                <a href="{{ url_for('dashboard') }}" class="btn-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

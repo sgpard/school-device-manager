@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Ops! Algo deu errado</title>
+</head>
+<body>
+    <h1>Desculpe, ocorreu um erro técnico.</h1>
+    <p>O sistema encontrou a seguinte situação: <strong>{{ mensagem }}</strong></p>
+    <p>Tente fechar outras abas do banco de dados e tente novamente.</p>
+    <a href="{{ url_for('dashboard') }}">Voltar para o Início</a>
+</body>
+</html>

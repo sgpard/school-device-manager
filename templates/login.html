@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Gestão CMZanei</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo.png') }}" type="image/png">
+    
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card-login { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        
+        .logo-escola { width: 150px; margin-bottom: 20px; }
+        h2 { margin-bottom: 25px; color: #333; font-size: 1.4em; }
+        
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 15px; }
+        
+        .btn-entrar { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-bottom: 10px; }
+        .btn-entrar:hover { background-color: #0056b3; }
+        
+        .btn-registrar { width: 100%; padding: 12px; background-color: #f8f9fa; color: #333; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; box-sizing: border-box; }
+        .btn-registrar:hover { background-color: #e2e6ea; }
+        
+        .link-recuperar { display: block; margin-top: 20px; font-size: 0.85em; color: #666; text-decoration: none; }
+        .link-recuperar:hover { text-decoration: underline; }
+        
+        .msg-erro { color: #dc3545; background-color: #f8d7da; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 0.9em; border: 1px solid #f5c6cb; }
+        .msg-sucesso { color: #155724; background-color: #d4edda; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 0.9em; border: 1px solid #c3e6cb; }
+    </style>
+</head>
+<body>
+
+    <div class="card-login">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo CMZanei" class="logo-escola">
+        
+        <h2>Controle de Empréstimos</h2>
+
+        {% if erro %}
+            <div class="msg-erro">{{ erro }}</div>
+        {% endif %}
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="msg-sucesso">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        
+        <form method="POST">
+            <input type="text" name="login" placeholder="Usuário" required autofocus>
+            <input type="password" name="senha" placeholder="Senha" required>
+            
+            <button type="submit" class="btn-entrar">Entrar</button>
+            <a href="{{ url_for('registrar') }}" class="btn-registrar">Criar Nova Conta</a>
+        </form>
+
+        <a href="{{ url_for('recuperar') }}" class="link-recuperar">Esqueci minha senha</a>
+    </div>
+
+</body>
+</html>
