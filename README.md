@@ -61,17 +61,8 @@ This project was developed to improve the management of school device loans by r
 
 ## Architecture
 
-User 	
-↓  
-HTML Form 
-↓	
-Flask Route
-↓
-Business Logic
-↓ 
-SQLite
-↓
-HTML Response
+User —→ HTML Form —→ Flask Route —→
+Business Logic —→ SQLite —→ HTML Response
 
 
 ## Project Structure
